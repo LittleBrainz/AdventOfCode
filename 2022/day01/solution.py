@@ -7,28 +7,27 @@
 
 def main(input_name):
     input_file = open(input_name)
-    input_text = input_file.read().strip()
-    input_list = parse_text(input_text)
-    result1 = part1(input_list)
-    result2 = part2(input_list)
+    input_text = input_file.read().rstrip()
+    input_data = parse_input(input_text)
+    result1 = calc_part1(input_data)
+    result2 = calc_part2(input_data)
     print(result1, result2)
 
 
-def parse_text(input_text):
-    return [parse_group(group_text)
-            for group_text in input_text.split("\n\n")]
+def parse_input(input_text):
+    return [parse_group(group_text) for group_text in input_text.split("\n\n")]
 
 
 def parse_group(group_text):
-    return sum(int(line) for line in group_text.split("\n"))
+    return sum(int(line_text) for line_text in group_text.split("\n"))
 
 
-def part1(input_list):
-    return max(input_list)
+def calc_part1(input_data):
+    return max(input_data)
 
 
-def part2(input_list):
-    return sum(sorted(input_list, reverse=True)[0:3])
+def calc_part2(input_data):
+    return sum(sorted(input_data, reverse=True)[0:3])
 
 
 if __name__ == "__main__":

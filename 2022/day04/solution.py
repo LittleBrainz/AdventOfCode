@@ -7,44 +7,43 @@
 
 def main(input_name):
     input_file = open(input_name)
-    input_text = input_file.read().strip()
-    input_list = parse_text(input_text)
-    result1 = part1(input_list)
-    result2 = part2(input_list)
+    input_text = input_file.read().rstrip()
+    input_data = parse_input(input_text)
+    result1 = calc_part1(input_data)
+    result2 = calc_part2(input_data)
     print(result1, result2)
 
 
-def parse_text(input_text):
-    return [parse_line(input_line)
-            for input_line in input_text.split("\n")]
+def parse_input(input_text):
+    return [parse_line(line_text) for line_text in input_text.split("\n")]
 
 
-def parse_line(input_line):
-    e1_t, e2_t = input_line.split(",")
+def parse_line(line_text):
+    e1_t, e2_t = line_text.split(",")
     e1f_t, e1t_t = e1_t.split("-")
     e2f_t, e2t_t = e2_t.split("-")
     return (int(e1f_t), int(e1t_t)), (int(e2f_t), int(e2t_t))
 
 
-def part1(input_list):
-    return sum(is_contained(e1, e2) for e1, e2 in input_list)
+def calc_part1(input_data):
+    return sum(contains(e1, e2) for (e1, e2) in input_data)
 
 
-def part2(input_list):
-    return sum(is_overlapped(e1, e2) for e1, e2 in input_list)
+def calc_part2(input_data):
+    return sum(overlaps(e1, e2) for (e1, e2) in input_data)
 
 
-def is_overlapped(e1, e2):
-    ol = calc_overlap(e1, e2)
+def overlaps(e1, e2):
+    ol = overlap(e1, e2)
     return 1 if width(ol) > 0 else 0
 
 
-def is_contained(e1, e2):
-    ol = calc_overlap(e1, e2)
+def contains(e1, e2):
+    ol = overlap(e1, e2)
     return 1 if width(ol) >= width(e1) or width(ol) >= width(e2) else 0
 
 
-def calc_overlap(e1, e2):
+def overlap(e1, e2):
     return max(e1[0], e2[0]), min(e1[1], e2[1])
 
 

@@ -10,32 +10,31 @@ PRIORITY = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def main(input_name):
     input_file = open(input_name)
-    input_text = input_file.read().strip()
-    input_list = parse_text(input_text)
-    result1 = part1(input_list)
-    result2 = part2(input_list)
+    input_text = input_file.read().rstrip()
+    input_data = parse_input(input_text)
+    result1 = calc_part1(input_data)
+    result2 = calc_part2(input_data)
     print(result1, result2)
 
 
-def parse_text(input_text):
-    return [parse_line(input_line)
-            for input_line in input_text.split("\n")]
+def parse_input(input_text):
+    return [parse_line(line_text) for line_text in input_text.split("\n")]
 
 
-def parse_line(input_line):
-    mid = len(input_line) // 2
-    c1 = set(input_line[:mid])
-    c2 = set(input_line[mid:])
+def parse_line(line_text):
+    mid = len(line_text) // 2
+    c1 = set(line_text[:mid])
+    c2 = set(line_text[mid:])
     return (c1, c2)
 
 
-def part1(input_list):
-    return sum(calc_priority1(c1, c2) for (c1, c2) in input_list)
+def calc_part1(input_data):
+    return sum(calc_priority1(c1, c2) for (c1, c2) in input_data)
 
 
-def part2(input_list):
-    return sum(calc_priority2(input_list[i:i+3])
-            for i in range(0, len(input_list), 3))
+def calc_part2(input_data):
+    return sum(calc_priority2(input_data[i:i+3])
+            for i in range(0, len(input_data), 3))
 
 
 def calc_priority1(c1, c2):
@@ -49,11 +48,11 @@ def calc_priority2(group_list):
     return priority(list(items)[0])
 
 
-def priorityXXX(item):
+def priority(item):
     return PRIORITY.index(item)
 
 
-def priority(item):
+def priority_alt(item):
     if item.islower():
         return ord(item) - 96
     return ord(item) - 64 + 26

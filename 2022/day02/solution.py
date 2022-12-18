@@ -7,31 +7,30 @@
 
 def main(input_name):
     input_file = open(input_name)
-    input_text = input_file.read().strip()
-    input_list = parse_text(input_text)
-    result1 = part1(input_list)
-    result2 = part2(input_list)
+    input_text = input_file.read().rstrip()
+    input_data = parse_input(input_text)
+    result1 = calc_part1(input_data)
+    result2 = calc_part2(input_data)
     print(result1, result2)
 
 
-def parse_text(input_text):
-    return [parse_line(input_line)
-            for input_line in input_text.split("\n")]
+def parse_input(input_text):
+    return [parse_line(line_text) for line_text in input_text.split("\n")]
 
 
-def parse_line(input_line):
-    op_t, me_t = input_line.split()
+def parse_line(line_text):
+    op_t, me_t = line_text.split()
     op = "ABC".index(op_t)
     me = "XYZ".index(me_t)
     return (op, me)
 
 
-def part1(input_list):
-    return sum(calc_score1(op, me) for (op, me) in input_list)
+def calc_part1(input_data):
+    return sum(calc_score1(op, me) for (op, me) in input_data)
 
 
-def part2(input_list):
-    return sum(calc_score2(op, me) for (op, me) in input_list)
+def calc_part2(input_data):
+    return sum(calc_score2(op, me) for (op, me) in input_data)
 
 
 def calc_score1(op, me):
