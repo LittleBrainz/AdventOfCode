@@ -19,36 +19,36 @@ def parse_input(input_text):
 
 
 def parse_line(line_text):
-    e1_t, e2_t = line_text.split(",")
-    e1f_t, e1t_t = e1_t.split("-")
-    e2f_t, e2t_t = e2_t.split("-")
-    return (int(e1f_t), int(e1t_t)), (int(e2f_t), int(e2t_t))
+    s1_t, s2_t = line_text.split(",")
+    s1b_t, s1e_t = s1_t.split("-")
+    s2b_t, s2e_t = s2_t.split("-")
+    return (int(s1b_t), int(s1e_t)), (int(s2b_t), int(s2e_t))
 
 
 def calc_part1(input_data):
-    return sum(contains(e1, e2) for (e1, e2) in input_data)
+    return sum(contains(s1, s2) for (s1, s2) in input_data)
 
 
 def calc_part2(input_data):
-    return sum(overlaps(e1, e2) for (e1, e2) in input_data)
+    return sum(overlaps(s1, s2) for (s1, s2) in input_data)
 
 
-def overlaps(e1, e2):
-    ol = overlap(e1, e2)
+def overlaps(s1, s2):
+    ol = overlap(s1, s2)
     return 1 if width(ol) > 0 else 0
 
 
-def contains(e1, e2):
-    ol = overlap(e1, e2)
-    return 1 if width(ol) >= width(e1) or width(ol) >= width(e2) else 0
+def contains(s1, s2):
+    ol = overlap(s1, s2)
+    return 1 if width(ol) >= width(s1) or width(ol) >= width(s2) else 0
 
 
-def overlap(e1, e2):
-    return max(e1[0], e2[0]), min(e1[1], e2[1])
+def overlap(s1, s2):
+    return max(s1[0], s2[0]), min(s1[1], s2[1])
 
 
-def width(e):
-    return max(0, e[1] - e[0] + 1)
+def width(s):
+    return max(0, s[1] - s[0] + 1)
 
 
 if __name__ == "__main__":

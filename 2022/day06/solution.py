@@ -19,16 +19,16 @@ def parse_input(input_text):
 
 
 def calc_part1(input_data):
-    return [marker_pos(data, 4) for data in input_data]
+    return [marker_pos(line_text, 4) for line_text in input_data]
 
 
 def calc_part2(input_data):
-    return [marker_pos(data, 14) for data in input_data]
+    return [marker_pos(line_text, 14) for line_text in input_data]
 
 
-def marker_pos(data, width):
-    for i in range(len(data) - (width - 1)):
-        marker = data[i:i+width]
+def marker_pos(line_text, width):
+    for i in range(len(line_text) - (width - 1)):
+        marker = line_text[i:i+width]
         if len(set(marker)) == width:
             return i + width
     return 0

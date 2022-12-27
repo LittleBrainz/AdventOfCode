@@ -41,9 +41,9 @@ def calc_priority1(c1, c2):
     return priority(list(c1.intersection(c2))[0])
 
 
-def calc_priority2(group_list):
+def calc_priority2(group_data):
     items = set(PRIORITY)
-    for (c1, c2) in group_list:
+    for (c1, c2) in group_data:
         items = items.intersection(c1.union(c2))
     return priority(list(items)[0])
 
