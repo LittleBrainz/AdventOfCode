@@ -16,13 +16,13 @@ class Node:
     children: dict = None
 
 
-def main(input_name):
+def main(input_name: str) -> None:
     input_file = open(input_name)
     input_text = input_file.read().rstrip()
     input_data = parse_input(input_text)
-    result1 = calc_part1(input_data)
-    result2 = calc_part2(input_data)
-    print(result1, result2)
+    part1 = calc_part1(input_data)
+    part2 = calc_part2(input_data)
+    print(f"\n{input_name}:\n  Part 1 = {part1}\n  Part 2 = {part2}")
 
 
 def parse_input(input_text: str) -> Node:
@@ -72,7 +72,7 @@ def calc_part2(root_node: Node) -> int:
     return sizes[0]
 
 
-def get_dir_sizes(this_node: Node) -> list[str]:
+def get_dir_sizes(this_node: Node) -> list[int]:
     if this_node.type == "file":
         return []
     sizes = [this_node.size]
@@ -81,7 +81,7 @@ def get_dir_sizes(this_node: Node) -> list[str]:
     return sorted(sizes)
 
 
-def print_node(indent: int, this_name: str, this_node: Node):
+def print_node(indent: int, this_name: str, this_node: Node) -> None:
     print(f"{'  '*indent}- {this_name} ({this_node.type}, size={this_node.size})")
     if this_node.type == "file":
         return

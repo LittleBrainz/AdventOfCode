@@ -7,24 +7,38 @@
 
 from copy import deepcopy
 
+from dataclasses import dataclass
 
-def main(input_name):
+
+@dataclass
+class Move:
+    qty: int
+    s0:  int
+    s1:  int
+
+@dataclass
+class StacksMoves:
+    stacks: list[list[str]]
+    moves:  list[Move]
+
+
+def main(input_name: str) -> None:
     input_file = open(input_name)
     input_text = input_file.read().rstrip()
     input_data = parse_input(input_text)
-    result1 = calc_part1(input_data)
-    result2 = calc_part2(input_data)
-    print(result1, result2)
+    part1 = calc_part1(input_data)
+    part2 = calc_part2(input_data)
+    print(f"\n{input_name}:\n  Part 1 = {part1}\n  Part 2 = {part2}")
 
 
-def parse_input(input_text):
+def parse_input(input_text: str) -> StacksMoves:
     stacks_text, moves_text = input_text.split("\n\n")
     stacks = parse_stacks(stacks_text)
     moves = parse_moves(moves_text)
-    return {"stacks": stacks, "moves": moves}
+    return StacksMoves(stacks, moves)
 
 
-def parse_stacks(stacks_text):
+def parse_stacks(stacks_text: str) -> list[list[str]]:
     layers = stacks_text.split("\n")[-2::-1]
     count = (len(layers[0]) + 1) // 4
     stacks = [[] for _ in range(count)]
@@ -36,28 +50,28 @@ def parse_stacks(stacks_text):
     return stacks
 
 
-def parse_moves(moves_text):
+def parse_moves(moves_text: str) -> list[Move]:
     return [parse_move(move_text) for move_text in moves_text.split("\n")]
 
 
-def parse_move(move_text):
+def parse_move(move_text: str) -> Move:
     _, qty_t, _, s0_t, _, s1_t = move_text.split(" ")
-    return (int(qty_t), int(s0_t) - 1, int(s1_t) - 1)
+    return Move(int(qty_t), int(s0_t) - 1, int(s1_t) - 1)
 
 
-def calc_part1(input_data):
-    return move_crates(input_data, order=-1)
+def calc_part1(stacks_moves: StacksMoves) -> str:
+    return move_crates(stacks_moves, order=-1)
 
 
-def calc_part2(input_data):
-    return move_crates(input_data, order=1)
+def calc_part2(stacks_moves: StacksMoves) -> str:
+    return move_crates(stacks_moves, order=1)
 
 
-def move_crates(input_data, order):
-    stacks = deepcopy(input_data["stacks"])
-    for qty, s0, s1 in input_data["moves"]:
-        stacks[s1] += stacks[s0][-qty:][::order]
-        stacks[s0]  = stacks[s0][:-qty]
+def move_crates(stacks_moves: StacksMoves, order: int) -> str:
+    stacks = deepcopy(stacks_moves.stacks)
+    for m in stacks_moves.moves:
+        stacks[m.s1] += stacks[m.s0][-m.qty:][::order]
+        stacks[m.s0]  = stacks[m.s0][:-m.qty]
     return "".join(stack[-1] for stack in stacks)
 
 

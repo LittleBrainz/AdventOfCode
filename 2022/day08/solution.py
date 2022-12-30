@@ -5,49 +5,47 @@
 # https://adventofcode.com/2022/day/8
 
 
-def main(input_name):
+def main(input_name: str) -> None:
     input_file = open(input_name)
     input_text = input_file.read().rstrip()
     input_data = parse_input(input_text)
-    result1 = calc_part1(input_data)
-    result2 = calc_part2(input_data)
-    print(result1, result2)
+    part1 = calc_part1(input_data)
+    part2 = calc_part2(input_data)
+    print(f"\n{input_name}:\n  Part 1 = {part1}\n  Part 2 = {part2}")
 
 
-def parse_input(input_text: str):
-    inp_grid = [parse_line(input_line) for input_line in input_text.split("\n")]
-    rows = len(inp_grid)
-    cols = len(inp_grid[0])
-    return (inp_grid, rows, cols)
+def parse_input(input_text: str) -> list[list[int]]:
+    return [parse_line(line_text) for line_text in input_text.split("\n")]
 
 
-def parse_line(input_line: str) -> list[int]:
-    return [int(char) for char in input_line]
+def parse_line(line_text: str) -> list[int]:
+    return [int(char) for char in line_text]
 
 
-def calc_part1(input_data: tuple) -> int:
-    vis_grid = calc_vis_grid(input_data, vis_init=0, scan_row_fn=scan_row1)
+def calc_part1(inp_grid: list[list[int]]) -> int:
+    vis_grid = calc_vis_grid(inp_grid, vis_init=0, scan_row_fn=scan_row1)
     return sum(sum(vis_row) for vis_row in vis_grid)
 
 
-def calc_part2(input_data: tuple) -> int:
-    vis_grid = calc_vis_grid(input_data, vis_init=1, scan_row_fn=scan_row2)
-    # print_grid(vis_grid)
+def calc_part2(inp_grid: list[list[int]]) -> int:
+    vis_grid = calc_vis_grid(inp_grid, vis_init=1, scan_row_fn=scan_row2)
     return max(max(vis_row) for vis_row in vis_grid)
 
 
-def calc_vis_grid(input_data: tuple, vis_init: int, scan_row_fn) -> list[list[int]]:
-    (inp_grid, rows, cols) = input_data
+def calc_vis_grid(inp_grid: list[list[int]], vis_init: int, 
+        scan_row_fn) -> list[list[int]]:
+    rows = len(inp_grid)
+    cols = len(inp_grid[0])
     vis_grid = [[vis_init] * cols for _ in range(rows)]
     for i in range(4):
-        inp_grid = rotate_grid(inp_grid, rows, cols)
-        vis_grid = rotate_grid(vis_grid, rows, cols)
+        inp_grid = rotate_grid(inp_grid)
+        vis_grid = rotate_grid(vis_grid)
         vis_grid = scan_grid(inp_grid, vis_grid, scan_row_fn)
     return vis_grid
 
 
 def scan_grid(inp_grid: list[list[int]], vis_grid: list[list[int]],
-            scan_row_fn) -> list[list[int]]:
+        scan_row_fn) -> list[list[int]]:
     return [scan_row_fn(inp_row, vis_row)
             for (inp_row, vis_row) in zip(inp_grid, vis_grid)]
 
@@ -70,7 +68,9 @@ def scan_row2(inp_row: list[int], vis_row: list[int]) -> list[int]:
     return vis_row
 
 
-def rotate_grid(org_grid: list[list[int]], rows: int, cols: int) -> list[list[int]]:
+def rotate_grid(org_grid: list[list[int]]) -> list[list[int]]:
+    rows = len(org_grid)
+    cols = len(org_grid[0])
     rot_grid = [[0] * rows for _ in range(cols)]
     for row in range(rows):
         for col in range(cols):
@@ -78,7 +78,7 @@ def rotate_grid(org_grid: list[list[int]], rows: int, cols: int) -> list[list[in
     return rot_grid
 
 
-def print_grid(grid: list[list[int]]):
+def print_grid(grid: list[list[int]]) -> None:
     for row_cells in grid:
         for cell in row_cells:
             print(f"{cell:3d}", end="")
