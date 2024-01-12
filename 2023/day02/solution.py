@@ -10,9 +10,9 @@ from dataclasses import dataclass
 
 @dataclass
 class CubeSet:
-    red: int
-    green: int
-    blue: int
+    r: int
+    g: int
+    b: int
 
 
 @dataclass
@@ -37,34 +37,41 @@ def parse_game_s(game_s: str) -> Game:
     (id_s, cubesets_s) = game_s.split(': ')
     id = int(id_s.split(' ')[1])
     cubesets = [parse_cubeset_s(cubeset_s) for cubeset_s in cubesets_s.split('; ')]
-    game = Game(id, cubesets)
-    return game
+    return Game(id, cubesets)
 
 
 def parse_cubeset_s(cubeset_s: str) -> CubeSet:
     cubeset = CubeSet(0, 0, 0)
     for cube_s in cubeset_s.split(', '):
         (val_s, color_s) = cube_s.split(' ')
-        setattr(cubeset, color_s, int(val_s))
+        setattr(cubeset, color_s[0], int(val_s))
     return cubeset
 
 
 def calc_part_1(games: list[Game]) -> int:
-    max_cubeset = parse_cubeset_s('12 red, 13 green, 14 blue')
-    id_count = 0
+    id_total = 0
+    max_cubeset = CubeSet(12, 13, 14)
     for game in games:
         id = game.id
         for cubset in game.cubesets:
-            if (cubset.red > max_cubeset.red or
-                cubset.green > max_cubeset.green or
-                cubset.blue > max_cubeset.blue):
+            if (cubset.r > max_cubeset.r or
+                cubset.g > max_cubeset.g or
+                cubset.b > max_cubeset.b):
                 id = 0
-        id_count += id
-    return id_count
+        id_total += id
+    return id_total
 
 
 def calc_part_2(games: list[Game]) -> int:
-    return 0
+    power_total = 0
+    for game in games:
+        max_cubeset = CubeSet(0, 0, 0)
+        for cubset in game.cubesets:
+            max_cubeset.r = max(max_cubeset.r, cubset.r)
+            max_cubeset.g = max(max_cubeset.g, cubset.g)
+            max_cubeset.b = max(max_cubeset.b, cubset.b)
+        power_total += max_cubeset.r * max_cubeset.g * max_cubeset.b
+    return power_total
 
 
 if __name__ == '__main__':
