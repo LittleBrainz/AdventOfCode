@@ -42,7 +42,20 @@ def calc_part_1(rows: list[str]) -> int:
 
 
 def calc_part_2(rows: list[str]) -> int:
-    return 0
+    gear_sum = 0
+    gear_near = {}
+    for r in range(1, len(rows) - 1):
+        for c in range(1, len(rows[r]) - 1):
+            char = rows[r][c]
+            if char.isdigit():
+                part_num = part_num * 10 + int(char)
+                check_star(rows, r, c, gear_near)
+            else:
+                if gearnear:
+                    part_sum += part_num
+                part_num = 0
+                near = False
+    return gear_sum
 
 
 def check_near(rows: list[str], r: int, c: int) -> bool:
