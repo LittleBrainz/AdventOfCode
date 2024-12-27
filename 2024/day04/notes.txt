@@ -1,0 +1,22 @@
+
+y = 0, ym
+  x = 0, xm
+    [y][x]
+
+y = 0, xm
+  x = xm, 0
+    [y][x]
+
+
+x = 0, xm
+  y = 0, ym
+    [y][x]
+
+x = 0, xm
+  y = ym, 0
+    [y][x]
+
+
+y = -xm, ym
+  x = max(0, -y), max(xm, xm - y)
+    [y+xm][x]
