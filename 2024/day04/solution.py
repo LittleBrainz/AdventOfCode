@@ -1,8 +1,8 @@
 # AdventOfCode/2024/day03/solution.py
 #
-# Day 3: Mull It Over
+# Day 4: Ceres Search
 #
-# https://adventofcode.com/2024/day/3
+# https://adventofcode.com/2024/day/4
 
 
 from dataclasses import dataclass
